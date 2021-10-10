@@ -1,0 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+
+namespace rakeshteam_project
+{
+    public partial class addoffers : Form
+    {
+        DataTable dt;
+        DataColumn dc;
+        DataRow dr;
+        DataTable offers;
+        public addoffers()
+        {
+            InitializeComponent();
+        }
+
+        private void txtofferid_TextChanged(object sender, EventArgs e)
+        {
+                if (Regex.IsMatch(txtofferid.Text, "[^0-9]"))
+
+                {
+                    MessageBox.Show("Do not enter non-numeric value" + txtofferid.Text);
+                    txtofferid.Text = "";
+                }
+        }
+
+        private void txtdiscount_TextChanged(object sender, EventArgs e)
+        {
+                if (Regex.IsMatch(txtdiscount.Text, "[^0-9]"))
+
+                {
+                    MessageBox.Show("Do not enter non-numeric value" + txtdiscount.Text);
+                    txtdiscount.Text = "";
+                }
+        }
+
+        private void txtpromosource_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnsubmit_Click(object sender, EventArgs e)
+        {
+            string offerid, discount, promosource;
+            offerid = txtofferid.Text;
+            discount = txtdiscount.Text;
+            promosource = txtpromosource.Text;
+            try
+            {
+                dr = offers.NewRow();
+                dr[0] = int.Parse(offerid);
+                dr[1] = float.Parse(discount);
+                dr[2] = promosource;
+                offers.Rows.Add(dr);
+            }
+            catch (Exception ob)
+            {
+                MessageBox.Show(ob.Message);
+            }
+
+            clear();
+        }
+        private void clear()
+        {
+            txtofferid.Text = "";
+            txtdiscount.Text = "";
+            txtpromosource.Text = "";
+        }
+
+
+    
+
+    private void addoffers_Load(object sender, EventArgs e)
+    {
+         offers = Generatetable();
+        dataGridView1.DataSource = offers;
+
+
+    }
+    DataTable Generatetable()
+    {
+        dt = new DataTable("addoffers");
+
+        dc = new DataColumn("OfferID", typeof(int));
+        dt.Columns.Add(dc);
+        dt.PrimaryKey = new DataColumn[] { dc };
+
+        dc = new DataColumn("DISCOUNT", typeof(float));
+        dt.Columns.Add(dc);
+
+        dc = new DataColumn("PROMOCODE", typeof(String));
+        dt.Columns.Add(dc);
+        return dt;
+
+    }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+    }
+}

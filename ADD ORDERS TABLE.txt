@@ -1,0 +1,118 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace PROJECT1
+{
+    public partial class Form1 : Form
+    {
+        DataTable dt;
+        DataColumn dc;
+        DataRow dr;
+        DataTable orders;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+             orders = Generatetable();
+            dataGridView1.DataSource = orders;
+
+        }
+        DataTable Generatetable()
+        {
+            dt = new DataTable("ADDORDERS");
+
+            dc = new DataColumn("ORDERID", typeof(int));
+            dt.Columns.Add(dc);
+            dt.PrimaryKey = new DataColumn[] { dc };
+
+            dc = new DataColumn("PRODUCTID", typeof(int));
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("PRODUCTQUANTITY", typeof(int));
+            dt.Columns.Add(dc);
+            return dt;
+
+        }
+        private void lbpq_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtoid_TextChanged(object sender, EventArgs e)
+        {
+            {
+                if (Regex.IsMatch(txtoid.Text, "[^0-9]"))
+
+                {
+                    MessageBox.Show("Do not enter non-numeric value" + txtoid.Text);
+                    txtoid.Text = "";
+                }
+            }
+        }
+
+        private void btnsubmit_Click(object sender, EventArgs e)
+        {
+            string orderid, productid, pquantity;
+            orderid = txtoid.Text;
+            productid = txtpid.Text;
+            pquantity = txtpq.Text;
+            try {
+                dr = orders.NewRow();
+                dr[0] = int.Parse(orderid);
+                dr[1] = int.Parse(productid);
+                dr[2] = int.Parse(pquantity);
+                orders.Rows.Add(dr);
+            }
+            catch(Exception ob)
+            {
+                MessageBox.Show(ob.Message);
+            }
+
+            clear();
+        }
+        private void clear()
+        {
+            txtoid.Text = "";
+            txtpid.Text = "";
+            txtpq.Text = "";
+        }
+
+      //  private void txtpid_ValueChanged(object sender, EventArgs e)
+        
+        private void txtpid_TextChanged(object sender, EventArgs e)
+        {
+            {
+                if (Regex.IsMatch(txtpid.Text, "[^0-9]"))
+
+                {
+                    MessageBox.Show("Do not enter non-numeric value" + txtpid.Text);
+                    txtpid.Text = "";
+                }
+            }
+
+        }
+
+        private void txtpq_TextChanged(object sender, EventArgs e)
+        {
+            {
+                if (Regex.IsMatch(txtpq.Text, "[^0-9]"))
+
+                {
+                    MessageBox.Show("Do not enter non-numeric value" + txtpq.Text);
+                    txtpq.Text = "";
+                }
+            }
+        }
+    }
+}

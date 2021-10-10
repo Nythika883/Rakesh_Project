@@ -1,0 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp3
+{
+    //ADD_Customer
+    public partial class Form1 : Form
+    {
+        DataTable dt;
+        DataColumn dc;
+        DataRow dr;
+        DataTable cust;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            cust = GetCustomerDetails();
+            dataGridView1.DataSource = cust;
+        }
+        DataTable GetCustomerDetails()
+        {
+            dt = new DataTable("CUSTOMERS");
+
+            dc = new DataColumn("CustomerID", typeof(int));
+            dt.Columns.Add(dc);
+            dt.PrimaryKey = new DataColumn[] { dc };
+
+            dc = new DataColumn("CustomerName", typeof(string));
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("CustomerContact", typeof(int));
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("CustomerEmail", typeof(string));
+            dt.Columns.Add(dc);
+
+            dc = new DataColumn("CustomerAddress", typeof(string));
+            dt.Columns.Add(dc);
+
+            return dt;
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (Regex.IsMatch(txtcid.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Do not enter non numeric  value.");
+                txtcid.Text = "";
+            }
+        }
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            string cid, cname, ccont, cemail, cadd;
+            cid = txtcid.Text;
+            cname = txtcname.Text;
+            ccont = txtcontact.Text;
+            cemail = txtemail.Text;
+            cadd = txtaddress.Text;
+
+            try
+            {
+                dr = cust.NewRow();
+
+                dr[0] = int.Parse(cid);
+                dr[1] = cname;
+                dr[2] = int.Parse(ccont);
+                dr[3] = cemail;
+                dr[4] = cadd;
+                cust.Rows.Add(dr);
+            }
+            catch(Exception ob)
+            {
+                MessageBox.Show(ob.Message);
+            }
+            clear();
+        }
+        private void clear()
+        {
+            txtcid.Text="";
+            txtcname.Text="";
+            txtcontact.Text="";
+            txtemail.Text="";
+            txtaddress.Text="";
+        }
+
+        private void txtcontact_TextChanged(object sender, EventArgs e)
+        {
+            if (Regex.IsMatch(txtcontact.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Do not enter non numeric  value.");
+                txtcontact.Text = "";
+            }
+        }
+    }
+}
