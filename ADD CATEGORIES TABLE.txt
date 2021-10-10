@@ -1,0 +1,70 @@
+public partial class Categories : Form
+    {
+        DataTable dt;
+        DataColumn dc;
+        DataRow dr;
+        DataTable Cat;
+        public Categories()
+        {
+            InitializeComponent();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Categories_Load(object sender, EventArgs e)
+        {
+            Cat = Generatetable();
+            dataGridView1.DataSource = Cat;
+        }
+        DataTable Generatetable()
+        {
+            dt = new DataTable("Categories");
+            dc = new DataColumn("CatId", typeof(int));
+            dt.Columns.Add(dc);
+            dt.PrimaryKey = new DataColumn[] { dc };
+            dc = new DataColumn("CatName", typeof(string));
+            dt.Columns.Add(dc);
+            dc = new DataColumn("CatDesc", typeof(string));
+            dt.Columns.Add(dc);
+            return dt;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            String catid, catname, catdesc;
+            catid = txtcatid.Text;
+            catname = txtcatname.Text;
+            catdesc = txtcatdesc.Text;
+            try
+            {
+                dr = Cat.NewRow();
+                dr[0] = int.Parse(catid);
+                dr[1] = catname;
+                dr[2] = catdesc;
+                Cat.Rows.Add(dr);
+            }
+            catch (Exception ob)
+            {
+                MessageBox.Show(ob.Message);
+            }
+            clear();
+        }
+        private void clear()
+        {
+            txtcatid.Text = "";
+            txtcatname.Text = "";
+            txtcatdesc.Text = "";
+        }
+
+        private void txtcatid_TextChanged(object sender, EventArgs e)
+        {
+            if (Regex.IsMatch(txtcatid.Text, "[^0-9]"))
+            {
+                MessageBox.Show("Do not enter non numeric  value.");
+                txtcatid.Text = "";
+            }
+        }
+    }
